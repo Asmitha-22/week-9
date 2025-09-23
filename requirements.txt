@@ -1,9 +1,1 @@
-<<<<<<< HEAD
 Flask
-=======
-<<<<<<< HEAD
-Flask
-=======
-Flask
->>>>>>> 50e9b13 (Initial commit)
->>>>>>> 25448d7 (Initial commit)
