@@ -1,12 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
-# Start ChromeDriver (no need for executable_path in latest Selenium)
-driver = webdriver.Chrome()
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# Open your Kubernetes app (use the correct NodePort)
-driver.get("http://localhost:31930")  # <-- use the correct port shown in kubectl get svc
-time.sleep(2)
+# Start Chrome
+driver = webdriver.Chrome()
+driver.get("http://localhost:31930")
+
+# Wait until the first input field is present (update name if different)
+wait = WebDriverWait(driver, 10)
+wait.until(EC.presence_of_element_located((By.NAME, "full_name")))
 
 # Fill the form
 driver.find_element(By.NAME, "full_name").send_keys("Test User")
@@ -19,9 +22,11 @@ driver.find_element(By.NAME, "dob").send_keys("2000-01-01")
 driver.find_element(By.NAME, "gender").send_keys("Male")
 driver.find_element(By.NAME, "address").send_keys("Hyderabad, India")
 
-# Submit the form
+# Submit
 driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
-time.sleep(3)
+
+# Wait for confirmation or page load
+wait.until(EC.url_changes("http://localhost:31930"))
 
 print("Test Completed Successfully!")
 driver.quit()
